@@ -1,0 +1,44 @@
+# docker-compose.yml
+version: '2'
+
+services:
+    rodskin:
+        build: rodskin
+        depends_on:
+          - engine
+        volumes:
+          - ./machinedocker/conf-sitesync:/sitesync/etc
+    engine:
+        build: engine
+        environment:
+          USER_ID: 9999
+          GROUP_ID: 9999
+        depends_on:
+          - httpd
+        command: ["./wait-for-it.sh"]
+    httpd:
+        image: httpd
+        ports:
+          - 80:80
+        depends_on:
+          - php
+        volumes:
+          - ./machinedocker/apache2:/etc/apache2/dockersite
+          - ./machinedocker/log:/var/log/dockersite
+          - ./machinedocker/www:/var/www/html
+        command: ["./wait-for-it.sh"]
+    php:
+        image: php:5.6
+        ports:
+          - 9000:9000
+        depends_on:
+          - db
+        command: ["./wait-for-it.sh"]
+    db:
+        image: mysql
+        ports:
+          - 3306:3306
+        volumes:
+          - ./machinedocker/db:/var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: root
