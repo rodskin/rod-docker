@@ -1,11 +1,14 @@
 # engine/Dockerfile
-FROM debian:jessie
+FROM php:5.6-fpm
 
 # enable docker repository
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install locales-all
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install net-tools dnsutils whois strace
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install dpkg
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install net-tools
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install dnsutils
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install whois
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install strace
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install sudo
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bash bash-completion
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server openssh-client rsync
